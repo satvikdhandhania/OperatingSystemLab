@@ -1,0 +1,63 @@
+echo "Input the choice of operation"
+echo -e "1:Factorial \n2:Palindrome ?\n3:Fibonacci\n4:Prime ?\n"
+read choice
+case $choice in
+
+        1)  echo Input an interger to compute its factirial
+            read n
+            fact=1
+            for((i=1;$i<=$n;i++))
+            do
+                fact=`expr $fact \* $i`
+            done
+            echo "Factorial is" , $fact
+        ;;
+
+        2)
+
+                echo "Input the number n"
+                read n
+                i=0
+                reverse=0
+                num=$n
+                while [ $num -gt 0 ]
+                do
+                        reverse=`expr $reverse \* 10 + $num % 10`
+                        num=`expr $num / 10`
+
+                done
+                if [ $reverse -eq $n ]
+                then
+                        echo "The given integer $n is a Palindrome"
+                else
+                        echo "The given integer $n is NOT a Palindrome"
+                fi
+        ;;
+
+        3)      echo "Input an integer"
+                read n
+                echo "Fibonacci Series is "
+                a=1
+                b=1
+                echo -n $a  $b
+                for((i=3;$i<=n;i++))
+                do
+                        c=`expr $a + $b`
+                        echo -n $c "  "
+                        a=$b
+                        b=$c
+                done
+
+        ;;
+
+        4)      echo "Prime Number ?"
+                echo Input an integer
+                read n
+                sqrtN=$(echo "sqrt($n)" | bc )
+                echo $sqrtN
+
+        ;;
+
+        *) echo "Invalid Choice"
+        ;;
+esac

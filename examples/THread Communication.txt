@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+ 
+ 
+
+int shared_x;
+pthread_mutex_t lock_x;
+ 
+void *thread_func(void *arg) {  	
+	int  *data = (int *)arg;
+        printf("Hello from thread ID: %u \n", pthread_self());
+        pthread_mutex_lock(&lock_x);
+        shared_x += *data;
+        printf("x = %u\n", shared_x);
+        pthread_mutex_unlock(&lock_x);
+        pthread_exit(NULL);
+}
+ 
+int main(int argc, char **argv) {	
+	pthread_t thread1, thread2;
+	int  thread1Data, thread2Data;
+        shared_x = 0;
+        pthread_mutex_init(&lock_x, NULL);
+    	thread1Data =  5;
+    		if ( pthread_create(&thread1, NULL, thread_func, &thread1Data) < 0 ) {
+    			perror("pthread_create");
+        		return EXIT_FAILURE;
+    }
+  
+	thread2Data = 10;
+    		if ( pthread_create(&thread2, NULL, thread_func, &thread2Data) < 0 ) {
+    			perror("pthread_create");
+        		return EXIT_FAILURE;
+    }
+    		pthread_join(thread1, NULL);
+
+    		pthread_join(thread2, NULL);
+  	return EXIT_SUCCESS;
+}
